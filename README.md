@@ -64,6 +64,7 @@ tag change is needed, the multi-arch image just works.
 |---|---|
 | `steamcmd_*` → `debian` `ubuntu` `dotnet` `proton` `proton_8` `sniper` | SteamCMD / Proton |
 | `voice_*` → `teaspeak` `mumble` | Voice servers |
+| `pumpkin` | [Pumpkin](https://github.com/Pumpkin-MC/Pumpkin) Minecraft server (Rust) |
 | `ghcr.io/krevan76/apps:uptimekuma` | Uptime Kuma |
 | `ghcr.io/krevan76/games:source` | Source-engine games |
 
@@ -91,6 +92,17 @@ docker pull ghcr.io/krevan76/yolks:graalvm_21
 
 Every image runs as the non-root `container` user with `/home/container` as workdir and
 `/entrypoint.sh` (via `tini`) as entrypoint, so it drops straight into a Pterodactyl/Pelican Egg.
+
+### Continuously updated images
+
+Some images do not follow the `<image>_<version>` scheme and use a single rolling tag instead — the tag on
+GHCR always points to the latest upstream build:
+
+| Tag | Updated | Notes |
+|---|---|---|
+| `ghcr.io/krevan76/yolks:pumpkin` | Every 6 hours | Always the latest [Pumpkin](https://github.com/Pumpkin-MC/Pumpkin) nightly. The binary is baked in at `/usr/local/bin/pumpkin`, so the Egg's startup command is simply `pumpkin`. |
+
+`pumpkin_nightly` is published as an alias of the same rolling image.
 
 ## Contributing
 
