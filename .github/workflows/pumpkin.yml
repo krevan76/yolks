@@ -30,7 +30,7 @@ jobs:
         name: Resolve latest Pumpkin nightly
         run: |
           info=$(curl -fsSL -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/Pumpkin-MC/Pumpkin/releases/tags/nightly)
-          echo "date=$(echo "$info" | jq -r '.published_at')" >> $GITHUB_OUTPUT
+          echo "date=$(echo "$info" | jq -r '.updated_at')" >> $GITHUB_OUTPUT
       - uses: docker/login-action@v3
         with:
           registry: ghcr.io
