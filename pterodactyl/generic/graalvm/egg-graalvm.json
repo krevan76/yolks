@@ -1,0 +1,55 @@
+{
+    "meta": {
+        "version": "PTDL_v2",
+        "update_url": null
+    },
+    "exported_at": "2026-09-17T09:43:55+00:00",
+    "name": "Generic GraalVM",
+    "author": "krevan76@users.noreply.github.com",
+    "description": "Creates a container that runs java on GraalVM.",
+    "features": null,
+    "docker_images": {
+        "GraalVM 17": "ghcr.io\/krevan76\/yolks:graalvm_17",
+        "GraalVM 20": "ghcr.io\/krevan76\/yolks:graalvm_20",
+        "GraalVM 21": "ghcr.io\/krevan76\/yolks:graalvm_21",
+        "GraalVM 22": "ghcr.io\/krevan76\/yolks:graalvm_22",
+        "GraalVM 23": "ghcr.io\/krevan76\/yolks:graalvm_23"
+    },
+    "file_denylist": [],
+    "startup": "java -Dterminal.jline=false -Dterminal.ansi=true -jar {{JARFILE}}",
+    "config": {
+        "files": "{}",
+        "startup": "{\r\n    \"done\": \"change this text\"\r\n}",
+        "logs": "{}",
+        "stop": "^C"
+    },
+    "scripts": {
+        "installation": {
+            "script": "#!\/bin\/bash\r\n\r\nmkdir -p \/mnt\/server\r\ncd \/mnt\/server\r\n\r\nif [ -n \"${DL_LINK}\" ]; then\r\n    curl -fsSL \"${DL_LINK}\" -o \"${JARFILE}\"\r\nfi\r\n",
+            "container": "ghcr.io\/krevan76\/installers:debian",
+            "entrypoint": "bash"
+        }
+    },
+    "variables": [
+        {
+            "name": "JAR File",
+            "description": "The jar file to run",
+            "env_variable": "JARFILE",
+            "default_value": "server.jar",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:64",
+            "field_type": "text"
+        },
+        {
+            "name": "Download Link",
+            "description": "Direct download link for the jar, leave blank to upload it yourself",
+            "env_variable": "DL_LINK",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string",
+            "field_type": "text"
+        }
+    ]
+}

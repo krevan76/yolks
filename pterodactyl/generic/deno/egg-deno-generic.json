@@ -1,0 +1,62 @@
+{
+    "meta": {
+        "version": "PTDL_v2",
+        "update_url": null
+    },
+    "exported_at": "2026-09-17T09:41:12+00:00",
+    "name": "Deno Generic",
+    "author": "krevan76@users.noreply.github.com",
+    "description": "A generic egg to run Deno applications.",
+    "features": null,
+    "docker_images": {
+        "Deno 1": "ghcr.io\/krevan76\/yolks:deno_1",
+        "Deno 2": "ghcr.io\/krevan76\/yolks:deno_2"
+    },
+    "file_denylist": [],
+    "startup": "deno run -A {{MAIN_FILE}}",
+    "config": {
+        "files": "{}",
+        "startup": "{\r\n    \"done\": \"change this part\"\r\n}",
+        "logs": "{}",
+        "stop": "^C"
+    },
+    "scripts": {
+        "installation": {
+            "script": "#!\/bin\/bash\r\n\r\nmkdir -p \/mnt\/server\r\ncd \/mnt\/server\r\n\r\nif [ -z \"${GIT_ADDRESS}\" ]; then\r\n    echo -e \"no git repo set, upload your files and start the server\"\r\n    exit 0\r\nfi\r\n\r\nif [ \"$(ls -A \/mnt\/server)\" ] && [ -d .git ]; then\r\n    git pull\r\nelif [ -z \"${BRANCH}\" ]; then\r\n    git clone ${GIT_ADDRESS} .\r\nelse\r\n    git clone --single-branch --branch ${BRANCH} ${GIT_ADDRESS} .\r\nfi\r\n",
+            "container": "ghcr.io\/krevan76\/installers:debian",
+            "entrypoint": "bash"
+        }
+    },
+    "variables": [
+        {
+            "name": "Git Repo Address",
+            "description": "GitHub repo to clone",
+            "env_variable": "GIT_ADDRESS",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string",
+            "field_type": "text"
+        },
+        {
+            "name": "Git Branch",
+            "description": "Branch to clone, blank for the repo default branch",
+            "env_variable": "BRANCH",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string",
+            "field_type": "text"
+        },
+        {
+            "name": "Main File",
+            "description": "The file to run with deno",
+            "env_variable": "MAIN_FILE",
+            "default_value": "main.ts",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:64",
+            "field_type": "text"
+        }
+    ]
+}

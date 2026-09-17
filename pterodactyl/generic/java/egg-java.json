@@ -1,0 +1,46 @@
+{
+    "meta": {
+        "version": "PTDL_v2",
+        "update_url": null
+    },
+    "exported_at": "2024-02-13T17:26:13+0000",
+    "name": "Generic Java",
+    "author": "sneaky@sneakyhub.com",
+    "description": "Creates a container that runs java.",
+    "features": null,
+    "docker_images": {
+        "ghcr.io\/krevan76\/yolks:java_8": "ghcr.io\/krevan76\/yolks:java_8",
+        "ghcr.io\/krevan76\/yolks:java_11": "ghcr.io\/krevan76\/yolks:java_11",
+        "ghcr.io\/krevan76\/yolks:java_16": "ghcr.io\/krevan76\/yolks:java_16",
+        "ghcr.io\/krevan76\/yolks:java_17": "ghcr.io\/krevan76\/yolks:java_17",
+        "ghcr.io\/krevan76\/yolks:java_19": "ghcr.io\/krevan76\/yolks:java_19",
+        "ghcr.io\/krevan76\/yolks:java_21": "ghcr.io\/krevan76\/yolks:java_21"
+    },
+    "file_denylist": [],
+    "startup": "java -Dterminal.jline=false -Dterminal.ansi=true -jar {{JARFILE}}",
+    "config": {
+        "files": "{}",
+        "startup": "{\r\n    \"done\": \"change this text\"\r\n}",
+        "logs": "{}",
+        "stop": "^C"
+    },
+    "scripts": {
+        "installation": {
+            "script": "#!\/bin\/bash\r\n# Java Installation Script\r\n#\r\n# Server Files: \/mnt\/server\r\nPROJECT=java\r\n\r\napt update\r\napt install -y curl jq\r\n\r\ncd \/mnt\/server",
+            "container": "ghcr.io\/krevan76\/yolks:debian",
+            "entrypoint": "bash"
+        }
+    },
+    "variables": [
+        {
+            "name": "JAR FILE",
+            "description": "",
+            "env_variable": "JARFILE",
+            "default_value": "sneakyhub.jar",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:20",
+            "field_type": "text"
+        }
+    ]
+}
