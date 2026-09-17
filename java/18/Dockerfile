@@ -1,4 +1,4 @@
-FROM        --platform=$TARGETOS/$TARGETARCH eclipse-temurin:18-jdk-noble
+FROM        --platform=$TARGETOS/$TARGETARCH eclipse-temurin:18-jdk-focal
 
 LABEL       author="Silly Development" maintainer="gamer@sillydev.co.uk"
 
