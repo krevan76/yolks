@@ -1,6 +1,5 @@
-name: build redis
+name: build postgres
 on:
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
   schedule:
     - cron: "0 0 * * 1"
@@ -8,24 +7,23 @@ on:
     branches:
       - master
     paths:
-      - redis/**
+      - postgres/**
 permissions:
   packages: write
 
 jobs:
   push:
-    name: "yolks:redis_${{ matrix.tag }}"
+    name: "yolks:postgres_${{ matrix.tag }}"
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         tag:
-          - 5
-          - 6
-          - 7
-          - 8
+          - "14"
+          - "16"
     steps:
       - uses: actions/checkout@v4
+      # Setup QEMU for ARM64 Build
       - uses: docker/setup-qemu-action@v3
       - uses: docker/setup-buildx-action@v3
         with:
@@ -41,10 +39,10 @@ jobs:
           password: ${{ secrets.REGISTRY_TOKEN || secrets.GITHUB_TOKEN }}
       - uses: docker/build-push-action@v6
         with:
-          context: ./redis
-          file: ./redis/${{ matrix.tag }}/Dockerfile
+          context: ./postgres
+          file: ./postgres/${{ matrix.tag }}/Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ghcr.io/${{ steps.lower-repo.outputs.repository }}/yolks:redis_${{ matrix.tag }}
-            ${{ github.repository_owner == 'silly-development' && format('ghcr.io/silly-development/yolks:redis_{0}', matrix.tag) || '' }}
+            ghcr.io/${{ steps.lower-repo.outputs.repository }}/yolks:postgres_${{ matrix.tag }}
+            ${{ github.repository_owner == 'silly-development' && format('ghcr.io/silly-development/yolks:postgres_{0}', matrix.tag) || '' }}
